@@ -1,3 +1,6 @@
+
+![VI](https://github.com/user-attachments/assets/f2be9774-137c-49dd-80cf-ce6d65dc5d49)
+
 # Vision Transformer in the Medical Field
 
 ## Overview
