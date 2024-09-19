@@ -1,117 +1,163 @@
 # Vision Transformer in the Medical Field
 
 ## Overview
-In this research, we will investigate the utilization of Vision Transformer (ViT) in
-radiographic diagnosis, focusing on the classification of lung cancer tumors using the
-combined PET/CT modality, as well as brain tumors from MRI. This study aims to
-assist healthcare professionals in the early diagnosis of these conditions, thus increasing
-survival rates and elevating overall well-being. In addition, we will compare the
-performance of CNN models with Transformer models and analyze the attention maps
-for both ViT and CNN models, gaining insights into their behavior and interpretability.
-Finally, we will explore the impact and severity of data leakage in medical imaging and
-examine its effect on the current literature on the topic.
 
-## Repository Overview
-This repository contains all the code and files necessary to complete this project. 
-The repository is composed of two directories, with each directory representing one of the 
-datasets utilized in our investigation.
+This research project investigates the application of Vision Transformer (ViT) in radiographic diagnosis, focusing on:
 
-# Lung Cancer 
-In this section, we outline the steps required to replicate our findings and run our code. Before proceeding,
-please download the Lung-PET-CT-Dx data from the following link:
-[Lung-PET-CT-Dx Data](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx/).
+1. Classification of lung cancer tumors using combined PET/CT modality
+2. Classification of brain tumors from MRI
 
-## Data Preparation
-After downloading the data,  This dataset comprises data from 355 patients with
-their names/IDs indicating their diagnosis. Specifically, patients marked with the letter
-’A’ have been diagnosed with Adenocarcinoma, ’B’ have Small Cell Carcinoma, ’E’
-represents Large Cell Carcinoma and ’G’ have Squamous Cell Carcinoma.
+Our goals are to:
 
+- Assist healthcare professionals in early diagnosis of these conditions
+- Increase survival rates and improve overall patient well-being
+- Compare the performance of CNN models with Transformer models
+- Analyze attention maps for both ViT and CNN models
+- Explore the impact and severity of data leakage in medical imaging
 
-**The first step** involves selecting all patients diagnosed with Adenocarcinoma (marked with 'A') and organizing their data into a separate folder. 
-Once this is done, run the following code:
+## Repository Structure
 
-``python Proprocess.py <image_dir> <annotation_dir> <patient_id> <output_dir> ``
+The repository contains two main directories, each representing one of the datasets used in our investigation:
 
-`<image_dir>:` The folder that contain all patients folders 
+1. Lung Cancer
+2. Brain Tumor
 
-`<annotation_dir>:` The folder that contain all annoataions files 
+## Lung Cancer Dataset
 
-`<patient_id>:` Patient ID represented by one of the following letters: `["A","B","E","G"] `
+### Data Preparation
 
-`<output_dir>:` Directory the contain all patients folders 
+1. Download the Lung-PET-CT-Dx data from [The Cancer Imaging Archive](https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx/).
 
-Repeat this process for each cancer type. After processing, all the patient data will be consolidated into 
-one `output_dir`
+2. Organize patients by cancer type:
+   ```
+   python Preprocess.py <image_dir> <annotation_dir> <patient_id> <output_dir>
+   ```
+   - `<image_dir>`: Folder containing all patient folders
+   - `<annotation_dir>`: Folder containing all annotation files
+   - `<patient_id>`: Patient ID represented by one of the following letters: ["A", "B", "E", "G"]
+   - `<output_dir>`: Directory to contain all processed patient folders
 
-**Secondly**, execute the following command to remove all PET and CT images, retaining only the integrated PET-CT images:
+3. Remove PET and CT images, keeping only integrated PET-CT images:
+   ```
+   python PET_CT_Removal.py <main_folder>
+   ```
+   - `<main_folder>`: Directory containing all patient folders
 
-``python PET_CT_Removal.py <main_folder>``
+### Modeling
 
-where 
-``<main_folder>:`` is the directory the contain all patients folders 
+Execute the following notebooks in order:
 
-## Modelling
+1. **Lung Cancer Data Preprocessing**
+   - Exploratory Data Analysis (EDA)
+   - BRISQUE deployment
+   - Data splitting
+   - Data augmentation
 
-**The following Notebooks should be executed in the specified sequence:**
+2. **Image Pre-Processing**
+   - Applying smoothing
+   - Filtering
+   - Enhancing image and edges
 
-1. Lung Cancer Data Preprocessing
+3. **Models**
+   - Training and testing of CNN-based and Transformer-based models
+   - Evaluation of data leakage
+   - Summarization of results
 
-This notebook includes:
+## Brain Tumor Dataset
 
-- Exploratory Data Analysis (EDA)
-- BRISQUE deployment
-- Data splitting
-- Data augmentation
+Download the dataset from [Figshare](https://figshare.com/articles/dataset/brain_tumor_dataset/1512427).
 
+Execute the following notebooks in order:
 
-2. Image Pre-Processing
+1. **Pre-Processing**
+   - Exploratory Data Analysis (EDA)
+   - Data splitting
+   - Data augmentation
 
-This step involves:
-- Applying smoothing
-- Filtering
-- Enhancing image and edges
+2. **CNN Models**
+   - Training and testing of CNN-based models
 
-3. Models
+3. **ViT Models**
+   - Training and testing of Transformer-based models
 
-This notebook includes:
+## Attention Map Visualization
 
-- Training and testing of CNN-based and Transformer-based models
-- Evaluation of data leakage
-- Summarization of results
+The `Attention_Map_Visualization.ipynb` notebook includes the visualization of ResNet and ViT attention maps.
 
-# Brain Tumor:
+## Results
 
-For the brain tumor dataset, it is more organized and requires less pre-processing.
-you can download the dataset from [here](https://figshare.com/articles/dataset/brain_tumor_dataset/1512427) 
+### Lung Cancer Classification
 
-**The following Notebooks should be executed in the specified sequence:**
+![Lung cancer results](https://github.com/user-attachments/assets/9f4b9896-67a0-424e-ab9c-ea2c0fc4c459)
 
-1. Pre-Processing 
+### Brain Tumor Classification
 
-This notebook includes:
+![Brain Tumor result](https://github.com/user-attachments/assets/3c53ccaf-51c4-4bf7-a7ed-db2bee9263fb)
 
-- Exploratory Data Analysis (EDA)
-- Data splitting
-- Data augmentation
+### Attention Map Visualization
+<img src="https://github.com/user-attachments/assets/fbdd8a26-774d-473c-a01f-82b1ad3e3daa" width="50%" />
 
-2. CNN Models
-
-Training and testing of CNN-based models 
-
-3. ViT models 
-
-Training and testing of Transformer-based models
-
-4. Results summarization
+The figure represents the attention maps for
+different models across various scenarios: A) Models trained on the brain tumor dataset.
+B) Models trained on the lung cancer dataset. C) Models trained on the leaked lung
+cancer dataset.
 
 
-# Attention Map Visualization
+### Data Leakage Analysis
 
-The Notebook includes the visualization of ResNet and ViT attention maps
+Our study on data leakage in the lung cancer dataset revealed significant insights:
 
+1. **Methodology**: We introduced two types of data leakage during data splitting:
+   - Splitting without considering patient boundaries, keeping original labels.
+   - Same splitting method, but with randomly assigned labels.
 
-# Note 
+2. **Model Performance**:
+   - ResNet:
+     - Achieved over 99% accuracy across all metrics in both approaches.
+     - Showed high sensitivity to data leakage.
+   - ViT B/16:
+     - Improved to over 70% in most metrics with original labels.
+     - Performed similar to non-leaked data with random labels, but still exceeded the 33.33% benchmark.
 
-All model weights for both datasets can be downloaded from here
-[here](https://essexuniversity.box.com/s/w7d2ueen596lk2ldw0lbmb5nbt8tmjtw)
+3. **Key Findings**:
+   - Both models showed inflated performance due to data leakage.
+   - ResNet appeared more susceptible to data leakage than ViT B/16.
+   - ViT B/16's attention maps focused on the entire image rather than specific areas like tumors, indicating potential "memorization" of images.
+
+4. **Implications**:
+   - Results comparable to previous studies suggest possible widespread data leakage issues in the field.
+   - Highlights the critical importance of careful data handling in medical imaging AI research.
+   - Demonstrates the need for robust validation techniques to ensure model generalizability.
+
+This analysis underscores the severity of data leakage in deep learning models for medical imaging and emphasizes the importance of rigorous data management practices in AI research.
+
+## Model Weights
+
+All model weights for both datasets can be downloaded from [Google Drive](https://drive.google.com/file/d/1g823_CNVHnPJF2k4lAM_uGuCf_XQXc_C/view?usp=sharing).
+
+## Conclusion and Future Work
+
+Our study on Vision Transformers (ViT) in radiographic diagnosis yielded several important insights:
+
+- ViTs performed well in brain tumor detection but were slightly outperformed by CNNs.
+- Both model types struggled with lung cancer detection, highlighting dataset complexity.
+- Data leakage significantly impacted results, with CNNs showing higher sensitivity than ViTs.
+- Attention map analysis revealed CNNs focus on specific regions, while ViTs capture broader features.
+
+**Limitations** included small dataset sizes, limited GPU resources, and inconsistencies in previous research using the same dataset.
+
+**Future research directions**
+- Improving ViT interpretability through attention map analysis.
+- Exploring Transformers in other medical imaging tasks (e.g., object detection, segmentation).
+- Enhancing ViT performance on smaller datasets.
+- Developing robust techniques to prevent and detect data leakage.
+
+This study underscores the potential of Vision Transformers in medical image analysis while emphasizing the need for data integrity and proper experimental design in AI research.
+
+## Requirements
+
+All required libraries are listed in the respective Jupyter notebooks. Please refer to each notebook for the specific libraries needed to run that part of the project.
+
+## Acknowledgements
+
+This project was completed by Ahmed Jafar under the supervision of Prof. Luca Citi as part of a master's thesis.
